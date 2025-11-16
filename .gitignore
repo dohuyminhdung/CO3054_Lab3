@@ -1,0 +1,66 @@
+# STM32CubeIDE specific
+.metadata/
+.settings/
+[Rr]elease/
+[Dd]ebug/
+[Bb]uild/
+*.launch
+.project
+.cproject
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.bin
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Backup files
+*.bak
+*~
+*.swp
+*.pdsbak
+
+# IDE specific files
+*.launch
+*.nguye.workspace
+.settings/
+
+# Proteus backup files
+*.pdsbak
+*.workspace
+*.PWI
+
+# Documentation
+*.PDF
