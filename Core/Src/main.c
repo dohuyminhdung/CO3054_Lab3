@@ -22,10 +22,9 @@
 #include "i2c.h"
 #include "spi.h"
 #include "tim.h"
-#include "usart.h"
 #include "gpio.h"
 #include "fsmc.h"
-#include "lab5_ex1.h"
+#include "lab3.h"
 #include "lcd.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -50,17 +49,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-	 if(huart->Instance == USART1){
-		 // rs232 isr
-		 // can be modified
-		 ring_buffer_push(&uart_rx_buffer, receive_buffer1);
-		 uart_data_received = 1;
-		 HAL_UART_Transmit(&huart1, &receive_buffer1, 1, 10);
-		 // turn on the receice interrupt
-		 HAL_UART_Receive_IT(&huart1, &receive_buffer1, 1);
-	 }
-}
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -105,7 +94,6 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM2_Init();
   MX_FSMC_Init();
-  MX_USART1_UART_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim2);
@@ -113,32 +101,10 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uart_init_rs232();
-  lcd_init();
-  uint8_t data;
-  uint8_t uart_buffer[100];
-  uint16_t idx = 0;
-  uart_Rs232SendString((uint8_t*)"UART ready\r\n");
+  trafficSetUp();
   while (1)
   {
-	  if(uart_data_received) {
-		  uart_data_received = 0;
-		  while (uart_ReadByte(&data)) {
-			  if (data == '\r' || data == '\n' || data == '#'){
-				  if (idx > 0){
-					  uart_buffer[idx] = '\0';
-					  idx = 0;
-					  lcd_Clear(WHITE);
-					  lcd_ShowStr(10, 100, (char*)uart_buffer, BLACK, WHITE, 24, 0);
-				  }
-			  }
-			  else {
-				  if (idx < sizeof(uart_buffer) - 1){
-					  uart_buffer[idx++] = data;
-				  }
-			  }
-		  }
-	  }
+	  lab3_run();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -193,7 +159,7 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-//	timerRun();
+	timerRun();
 }
 /* USER CODE END 4 */
 
